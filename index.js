@@ -9,6 +9,20 @@ import cors from 'cors';
 
 import postRoutes from './routes/posts.js';
 import userRouter from "./routes/user.js";
+// require('dotenv').config();
+import { config } from 'dotenv';
+
+const result = config();
+
+if (!result.error) {
+     Object.keys(result.parsed).forEach((key) => {
+       const value = result.parsed[key];
+       if (value) {
+         process.env[key] = value;
+       }
+     });
+}
+
 
 const app = express();
 
@@ -23,9 +37,9 @@ app.use(cors());
 app.use('/posts', postRoutes);
 app.use("/user", userRouter);
 
-const CONNECTION_URL = 'mongodb://127.0.0.1:27017/memories' || process.env.DB_URL;
+const CONNECTION_URL = process.env.DATABASE;
 console.log(CONNECTION_URL);
-const PORT =  5000 || process.env.PORT;
+const PORT = process.env.PORT;
 
 // Our Server got Connected to our database
 
